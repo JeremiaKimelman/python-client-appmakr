@@ -14,7 +14,7 @@ class Client(ParentClient):
         ParentClient.__init__(self, key, secret, host=host, port=port)
 
         self.endpoints.update([
-            ('likes', '/socialize/likes/')])
+            ('likes', 'socialize/likes/')])
 
     #Our Like layer
 

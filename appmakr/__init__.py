@@ -19,16 +19,17 @@ class Client(object):
 
     realm = "http://www.dev.appmakr.com"
     endpoints = {
+        'likes': '/socialize/likes',
     }
 
-    def __init__(self, key, secret, api_version=API_VERSION, host="http://www.dev.appmakr.com", port=80):
+    def __init__(self, key, secret, api_version=API_VERSION, host="www.dev.appmakr.com", port=80):
         self.host = host
         self.port = port
         self.consumer = oauth.Consumer(key, secret)
         self.key = key
         self.secret = secret
         self.signature = oauth.SignatureMethod_HMAC_SHA1()
-        self.uri = "http://%s:%s" % (host, port)
+        self.uri = "http://%s:%s" % (host,port)
         self.http = Http()
         self.headers = None
 
@@ -61,31 +62,6 @@ class Client(object):
             raise TypeError('Missing required argument "%s"' % (e.args[0],))
         return urljoin(urljoin(self.uri, '/'), endpoint)
 
-    def get_annotations(self, appmakrhandle):
-        if not is_appmakrhandle(appmakrhandle):
-            raise TypeError("appmakrhandle is required to match the regex %s, but it was %s :: %r" % (APPMAKRHANDLE_RSTR, type(appmakrhandle), appmakrhandle))
-        endpoint = self._endpoint('annotations', appmakrhandle=appmakrhandle)
-        return json_decode(self._request(endpoint, 'POST')[1])
-
-    def annotate(self, appmakrhandle, annotations, private):
-        if not isinstance(annotations, dict):
-            raise TypeError('annotations must be of type dict')
-        if not len(annotations.keys()):
-            raise ValueError('annotations dict is empty')
-        for annotation_type in annotations.keys():
-            if not len(annotations[annotation_type].keys()):
-                raise ValueError('annotation type "%s" is empty' % annotation_type)
-        if not isinstance(private, bool):
-            raise TypeError('private must be of type bool')
-
-        data = {'annotations': annotations,
-                'private': private}
-
-        endpoint = self._endpoint('annotations', appmakrhandle=appmakrhandle)
-        return json_decode(self._request(endpoint,
-                                        'POST',
-                                        data=json.dumps(data))[1])
-
     def _request(self, endpoint, method, data=None):
         """
         Not used directly by code external to this lib. Performs the
@@ -107,6 +83,7 @@ class Client(object):
             http_method=method, http_url=endpoint, parameters=params)
 
         request.sign_request(self.signature, self.consumer, None)
+        print '#####' + endpoint
         headers = request.to_header(self.realm)
         headers['User-Agent'] = 'Appmakr Python Client v%s' % __version__
 
