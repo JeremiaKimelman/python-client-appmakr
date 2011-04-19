@@ -83,7 +83,14 @@ class Client(object):
             http_method=method, http_url=endpoint, parameters=params)
 
         request.sign_request(self.signature, self.consumer, None)
-        print '#####' + endpoint
+
+        #Test to make sure body is compiled correctly and exists
+        try:
+            f = urllib2.urlopen(urllib2.Request(body))
+            deadLinkFound = False
+        except:
+            deadLinkFound = True
+        
         headers = request.to_header(self.realm)
         headers['User-Agent'] = 'Appmakr Python Client v%s' % __version__
 
@@ -93,6 +100,5 @@ class Client(object):
             raise APIError(int(self.headers['status']), content, self.headers)
 
         return self.headers, content
-
 
 from appmakr.socialize import Client as SocializeClient
