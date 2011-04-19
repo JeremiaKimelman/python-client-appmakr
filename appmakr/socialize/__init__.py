@@ -23,4 +23,6 @@ class Client(ParentClient):
             raise TypeError("Please send a correct Like Object, you passed in:" + str(like))
 
         endpoint = self._endpoint('likes')
-        self._request(endpoint, "PUT", like.to_dict())
+        self._request(endpoint, "POST", like.to_dict())
+        if (self._request != "POST"):
+            raise Exception("The Like system currently only accepts POST as a method, please use method")

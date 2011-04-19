@@ -39,14 +39,6 @@ class DecodeErrorTest(unittest.TestCase):
         self.failUnless("Could not decode JSON" in e.msg, repr(e.msg))
         self.failUnless('JSONDecodeError' in repr(e), repr(e))
 
-class EndpointsTest(unittest.TestCase):
-    def test_init(self, key, secret, api_version='0.1', host='http://www.dev.appmakr.com', port=80):
-        self.subclient = True
-        ParentClient.__init__(self, key, secret, host=host, port=port)
-
-        self.endpoints.update([
-            ('likes', '/socialize/likes/')])
-
     def add_like(self, like):
         if (like.__class__ != Like):
             raise TypeError("Please send a correct Like Object, you passed in:" + str(like))
@@ -55,7 +47,7 @@ class EndpointsTest(unittest.TestCase):
         if endpoint != self.endpoints.update():
             raise TypeError("Please send the correct endpoint, you passed in:" + str(endpoint))
 
-        self._request(endpoint, "PUT", like.to_dict())
+        self._request(endpoint, "POST", like.to_dict())
 
 class ClientTest(unittest.TestCase):
     def setUp(self):
@@ -76,16 +68,6 @@ class ClientTest(unittest.TestCase):
             self.failUnless(str(e).startswith('Please send a correct Like Object'), str(e))
         else:
             self.fail('Should have raised exception.')
-
-    def test_dont_json_decode_results(self):
-        """ _request() is required to return the exact string that the HTTP
-        server sent to it -- no transforming it, such as by json-decoding. """
-
-        mockhttp = mock.Mock()
-        mockhttp.request.return_value = ({'status': '200', 'content-type': 'application/json', }, '{ "Hello": "I am a string. \xe2\x9d\xa4" }'.decode('utf-8'))
-
-        res = self.client._request("http://thing", 'POST')[1]
-        self.failUnlessEqual(res, '{ "Hello": "I am a string. \xe2\x9d\xa4" }'.decode('utf-8'))
 
     def test_APIError(self):
         e = APIError(500, 'whee', {'status': "500"})

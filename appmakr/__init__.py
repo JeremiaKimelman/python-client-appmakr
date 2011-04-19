@@ -91,10 +91,18 @@ class Client(object):
         except:
             deadLinkFound = True
         
+        print ''
+        print 'Sending Like to ' + body
+        print ''
+
         headers = request.to_header(self.realm)
         headers['User-Agent'] = 'Appmakr Python Client v%s' % __version__
 
         self.headers, content = self.http.request(endpoint, method, body=body, headers=headers)
+        
+        print ''
+        print headers
+        print ''
 
         if self.headers['status'][0] not in ('2', '3'):
             raise APIError(int(self.headers['status']), content, self.headers)
