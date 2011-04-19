@@ -1,0 +1,11 @@
+Metadata-Version: 1.0
+Name: appmakr
+Version: 3.0.102
+Summary: Library for interfacing with Appmakrs API
+Home-page: http://github.com/Appmakr/python-appmakr
+Author: Dan Patey & Isaac Mosquera
+Author-email: Dan.Patey@Appmakr.com
+License: MIT License
+Description: UNKNOWN
+Keywords: appmakr
+Platform: UNKNOWN

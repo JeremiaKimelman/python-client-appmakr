@@ -1,0 +1,11 @@
+Metadata-Version: 0.1
+Name: Socialize
+Version: 0.1.000
+Summary: Library for interfacing with Appmakr API
+Home-page: http://github.com/appmakr/python-appmakr
+Author: Dan Patey and Isaac Mosquera
+Author-email: Dan.Patey@Appmakr.com
+License: MIT License
+Description: UNKNOWN
+Keywords: Appmakr
+Platform: UNKNOWN

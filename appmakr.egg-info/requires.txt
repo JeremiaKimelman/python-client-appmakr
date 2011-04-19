@@ -1,0 +1,4 @@
+httplib2>=0.6.0
+oauth2>=1.5
+pyutil[jsonutil] >= 1.8.1
+ipaddr >= 2.0.0
